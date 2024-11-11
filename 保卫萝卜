@@ -1,0 +1,78 @@
+import pygame
+import random
+
+# 初始化Pygame
+pygame.init()
+
+# 设置屏幕尺寸
+screen_width = 800
+screen_height = 600
+screen = pygame.display.set_mode((screen_width, screen_height))
+
+# 定义颜色
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GREEN = (0, 255, 0)
+RED = (255, 0, 0)
+
+# 敌人类
+class Enemy:
+    def __init__(self):
+        self.x = 0
+        self.y = random.randint(50, screen_height - 50)
+        self.speed = 2
+        self.health = 100
+
+    def move(self):
+        self.x += self.speed
+
+    def draw(self):
+        pygame.draw.rect(screen, RED, (self.x, self.y, 40, 40))
+
+# 塔类
+class Tower:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.range = 100
+        self.damage = 10
+
+    def draw(self):
+        pygame.draw.rect(screen, GREEN, (self.x, self.y, 50, 50))
+
+# 游戏主循环
+def main():
+    clock = pygame.time.Clock()
+    enemies = []
+    towers = []
+    running = True
+
+    while running:
+        screen.fill(WHITE)
+
+        # 处理事件
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+        # 创建敌人
+        if random.randint(1, 50) == 1:
+            enemies.append(Enemy())
+
+        # 移动和绘制敌人
+        for enemy in enemies:
+            enemy.move()
+            enemy.draw()
+
+        # 绘制塔
+        for tower in towers:
+            tower.draw()
+
+        # 更新屏幕
+        pygame.display.flip()
+        clock.tick(60)
+
+    pygame.quit()
+
+if __name__ == "__main__":
+    main()
